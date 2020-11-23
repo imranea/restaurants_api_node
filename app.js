@@ -4,6 +4,7 @@ const path = require("path");
 require("./db/db")
 
 const userRoutes = require("./routes/users")
+const restaurantsRoutes = require("./routes/restaurants")
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(bodyParser.json());
 
 
 app.use("/api/auth",userRoutes);
+app.use("/api/restaurants", restaurantsRoutes)
 
 module.exports = app
