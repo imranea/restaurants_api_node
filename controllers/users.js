@@ -1,27 +1,27 @@
 const User = require('../models/User')
 
-exports.signUp = async (req,res,next) =>{
-    const user = new User(req.body)
+exports.signUp = async (req,res,next) =>{ // signup
+    const user = new User(req.body) // instance a new user
     try{
-        const token = await user.generateAuthToken()
-        await user.save();
+        const token = await user.generateAuthToken() // create a token
+        await user.save(); // save user
         res.status(200).json({user,token})
     }catch(e){
         res.status(400).json({message:e})
     }
 }
 
-exports.login = async (req,res)=>{
+exports.login = async (req,res)=>{ // login
     try{
-        const user= await User.findByCredentials(req.body.email,req.body.password)
-        const token = await user.generateAuthToken()
+        const user= await User.findByCredentials(req.body.email,req.body.password) // check if user exist
+        const token = await user.generateAuthToken() // create token
         res.send({user,token})
     }catch(e){
         res.status(400).json({message:e})
     }  
 }
 
-exports.logout = async(req,res,next) =>{
+exports.logout = async(req,res,next) =>{ //logout
     try{
             req.user.tokens = req.user.tokens.filter((token)=>{
             return token.token != req.token
@@ -33,7 +33,7 @@ exports.logout = async(req,res,next) =>{
     }
 }
 
-exports.logoutAll = async (req,res,next) =>{ 
+exports.logoutAll = async (req,res,next) =>{  //logout all
     try{
         req.user.tokens=[]
         await req.user.save()
@@ -43,7 +43,7 @@ exports.logoutAll = async (req,res,next) =>{
     }
 }
 
-exports.me = (req,res) =>{
+exports.me = (req,res) =>{ // check if user is connected
     res.send(req.user)
 }
 

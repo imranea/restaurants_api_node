@@ -1,6 +1,6 @@
 const Restaurant = require("../models/Restaurant")
 
-exports.createRestaurant = async(req,res,next) =>{
+exports.createRestaurant = async(req,res,next) =>{ // Create Restaurant
     try{
         const restaurant = new Restaurant(req.body)
         await restaurant.save()
@@ -11,22 +11,21 @@ exports.createRestaurant = async(req,res,next) =>{
 
 }
 
-exports.updateRestaurant= async(req,res,next)=>{
-    const updates = Object.keys(req.body)
-    console.log(updates)
-    const updateAllowed = ["name","address"]
-    const isValidOperation = updates.every((update)=> updateAllowed.includes(update))
+exports.updateRestaurant= async(req,res,next)=>{ // Update Restaurant
+    const updates = Object.keys(req.body) // get keys from req body
+    const updateAllowed = ["name","address"] // properties allow to updat
+    const isValidOperation = updates.every((update)=> updateAllowed.includes(update)) // check if the properties can be update
 
-    if(!isValidOperation){
+    if(!isValidOperation){ 
         return res.status(404).json({message:"Restaurant not found to update"})
     }
 
     try{
-        const restaurantToUpdate = await Restaurant.findById(req.params.id)
-        updates.forEach(update =>{
+        const restaurantToUpdate = await Restaurant.findById(req.params.id) // get Restaurant with the params id
+        updates.forEach(update =>{ // update the Restaurant with the new data
             restaurantToUpdate[update]=req.body[update]
         })
-        await restaurantToUpdate.save()
+        await restaurantToUpdate.save() // save 
 
         if(!restaurantToUpdate){
             return res.status(404).json({message:"Restaurant not found to update"})

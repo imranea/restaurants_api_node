@@ -37,28 +37,28 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
-userSchema.methods.generateAuthToken = async function(){
-    const user = this
-    const token = jwt.sign({_id:user._id.toString()},"thisismynewcourse")
-    user.tokens = user.tokens.concat({token})
+userSchema.methods.generateAuthToken = async function(){ // method async 
+    const user = this 
+    const token = jwt.sign({_id:user._id.toString()},"thisismynewcourse") // create token with a string 
+    user.tokens = user.tokens.concat({token}) // add token in array of token
 
-    await user.save();
+    await user.save(); // asve
     return token
 }
 
-userSchema.statics.findByCredentials = async (email,password) =>{
-    const user = await User.findOne({email})
-    if(!user){
+userSchema.statics.findByCredentials = async (email,password) =>{ // check if user exist in database
+    const user = await User.findOne({email}) // find user by email
+    if(!user){ 
         throw new Error("Unable to login")
     }
-    const isMatch = await bcrypt.compare(password,user.password)
+    const isMatch = await bcrypt.compare(password,user.password) // check password enter with the password in collection
     if(!isMatch){
         throw new Error("Unable to login")
     }
     return user
 }
 
-userSchema.pre("save", async function(next){
+userSchema.pre("save", async function(next){  // before save, hash of password
     const user = this
     if(user.isModified("password")){
         user.password = await bcrypt.hash(user.password,10)

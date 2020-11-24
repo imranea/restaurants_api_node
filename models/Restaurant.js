@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator=  require("validator")
 
-
+/** Collection Restaurant */
 const restaurantSchema = new mongoose.Schema({
     name:{
         type:String,
