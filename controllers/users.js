@@ -15,7 +15,7 @@ exports.login = async (req,res)=>{ // login
     try{
         const user= await User.findByCredentials(req.body.email,req.body.password) // check if user exist
         const token = await user.generateAuthToken() // create token
-        res.send({user,token})
+        res.send({token})
     }catch(e){
         res.status(400).json({message:e})
     }  
