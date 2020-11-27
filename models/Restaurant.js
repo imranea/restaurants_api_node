@@ -13,22 +13,65 @@ const restaurantSchema = new mongoose.Schema({
             }
         }
     },
-    address:{
+    vicinity:{
         type:String,
         required:true,
         unique:true,
         trim:true
     },
-    latitude:{
+    geometry:{
+        latitude:{
+            type:Number,
+            required:true,
+            trim:true
+        },
+        longitude:{
+            type:Number,
+            required:true,
+            trim:true
+        }
+    },
+    ratings:{
         type:Number,
         required:true,
         trim:true
     },
-    longitude:{
-        type:Number,
+    types:[
+        {
+            type:String,
+            trim:true,
+            default:null
+        }
+     ],
+    image:{
+        type:String,
         required:true,
-        trim:true
-    }
+        trim:true,
+        default:null
+     },
+    reviews:[{
+        author_name:{
+            type:String,
+            trim:true,
+            required:true
+        },
+        profile_photo_url:{
+            type:String,
+            trim:true,
+            default:null
+        },
+        rating:{
+            type:Number,
+            trim:true,
+            required:true
+        },
+        text:{
+            type:String,
+            trim:true,
+            required:true
+        },
+
+    }]
 
 })
 
