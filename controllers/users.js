@@ -23,7 +23,7 @@ exports.login = async (req,res)=>{ // login
 
 exports.logout = async(req,res,next) =>{ //logout
     try{
-            req.user.tokens = req.user.tokens.filter((token)=>{
+        req.user.tokens = req.user.tokens.filter((token)=>{
             return token.token != req.token
         })
         await req.user.save()
@@ -44,7 +44,7 @@ exports.logoutAll = async (req,res,next) =>{  //logout all
 }
 
 exports.me = (req,res) =>{ // check if user is connected
-    res.send(req.user)
+    res.status(200).json({connected:true})
 }
 
 exports.allUsers = async(req,res) =>{

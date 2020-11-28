@@ -10,7 +10,7 @@ router.post("/signup",userCtrl.signUp) // signup
 router.post("/login",userCtrl.login) // login
 router.get("/me",auth,userCtrl.me) // check if user is connected
 router.get("/allusers",auth,userCtrl.allUsers) // get list Users
-router.post("/logout",auth,userCtrl.logout) // logout
+router.get("/logout",auth,userCtrl.logout) // logout
 router.post("/logoutAll",auth,userCtrl.logoutAll) // logout all sessions
 
 module.exports = router;
