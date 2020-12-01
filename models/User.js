@@ -2,8 +2,21 @@ const mongoose = require('mongoose');
 const validator = require("validator");
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
+const Restaurant = require('./Restaurant')
 
 const userSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+        unique:true,
+        trim:true,
+        lowercase:true,
+        validate(value){
+            if(!validator.isLength(value,{min:4})){
+                throw new Error('Must have more than 6 letters')
+            }
+        }
+    },
     email:{
         type:String,
         required:true,
@@ -36,6 +49,12 @@ const userSchema = new mongoose.Schema({
         }
     }]
 });
+
+userSchema.virtual('restaurants',{ // configure relation between User and Task
+    ref:'Restaurant', // collection to bind
+    localField:'_id', // _id in collection User
+    foreignField:'owner' // foreign key in collection Restaurant
+})
 
 userSchema.methods.generateAuthToken = async function(){ // method async 
     const user = this 

@@ -17,7 +17,7 @@ exports.login = async (req,res)=>{ // login
         const token = await user.generateAuthToken() // create token
         res.send({token})
     }catch(e){
-        res.status(400).json({message:e})
+        res.status(400).json({message:"Le compte n'existe pas"})
     }  
 }
 
