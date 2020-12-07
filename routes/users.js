@@ -22,12 +22,16 @@ const upload = multer({
 router.post("/signup",userCtrl.signUp) // signup
 router.post("/login",userCtrl.login) // login
 
+
 router.get("/me",auth,userCtrl.me) // check if user is connected
-router.post("/meAvatar",auth,upload.single('avatar'),userCtrl.meAvatar)
-router.delete("/meAvatar",auth,userCtrl.deleteAvatar)
-router.get("/meAvatar/:id",userCtrl.avatarUser)
+router.post("/meAvatar",auth,upload.single('avatar'),userCtrl.meAvatar) // upload an avatar for the profil
+router.delete("/meAvatar",auth,userCtrl.deleteAvatar) // delete avatar user
+router.get("/meAvatar/:id",userCtrl.avatarUser) // get the avatar
 
 router.get("/allusers",auth,userCtrl.allUsers) // get list Users
+
+router.patch("/me",auth,userCtrl.update) //update profil
+router.delete("/me",auth,userCtrl.delete) // delete profil
 
 router.get("/logout",auth,userCtrl.logout) // logout
 router.post("/logoutAll",auth,userCtrl.logoutAll) // logout all sessions

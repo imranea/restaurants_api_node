@@ -90,3 +90,33 @@ exports.allUsers = async(req,res) =>{
         res.status(500).json({message:e})
     }
 }
+
+exports.update = async(req,res) =>{
+    const updates = Object.keys(req.body)
+    const allowedUpdate = ['name','email','password']
+
+    const isValideOperation = updates.every( update => allowedUpdate.includes(update))
+
+    if(!isValideOperation){
+        return res.status(404).send({ error: "Invalid update!" })
+    }
+
+    try{
+        updates.forEach((update)=>{
+            req.user[update]=req.body[update]
+        })
+        await req.user.save()
+        res.send(req.user)
+    }catch(e){
+        res.status(400).send(e)
+    }
+}
+
+exports.delete = async(req,res) =>{
+    try{
+        await req.user.remove()
+        res.send(req.user)
+    }catch(e){
+        res.status(500).json({erreur:e})
+    }
+}
