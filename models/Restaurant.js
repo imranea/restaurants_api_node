@@ -78,6 +78,8 @@ const restaurantSchema = new mongoose.Schema({
         ref:'User'
     }
 
+},{
+    timestamps:true
 })
 
 

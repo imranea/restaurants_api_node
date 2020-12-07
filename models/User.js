@@ -47,7 +47,10 @@ const userSchema = new mongoose.Schema({
             type:String,
             required:true
         }
-    }]
+    }],
+    avatar:{
+        type:Buffer
+    }
 });
 
 userSchema.virtual('restaurants',{ // configure relation between User and Task
@@ -55,6 +58,15 @@ userSchema.virtual('restaurants',{ // configure relation between User and Task
     localField:'_id', // _id in collection User
     foreignField:'owner' // foreign key in collection Restaurant
 })
+
+userSchema.methods.toJSON = function(){
+    const user= this
+    const userObject = user.toObject()
+
+    delete userObject.password
+
+    return userObject
+}
 
 userSchema.methods.generateAuthToken = async function(){ // method async 
     const user = this 

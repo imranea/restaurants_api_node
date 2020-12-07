@@ -1,4 +1,5 @@
-const User = require('../models/User')
+const User = require('../models/User');
+const sharp = require('sharp');
 
 exports.signUp = async (req,res,next) =>{ // signup
     const user = new User(req.body) // instance a new user
@@ -15,7 +16,7 @@ exports.login = async (req,res)=>{ // login
     try{
         const user= await User.findByCredentials(req.body.email,req.body.password) // check if user exist
         const token = await user.generateAuthToken() // create token
-        res.send({token})
+        res.send({user,token})
     }catch(e){
         res.status(400).json({message:"Le compte n'existe pas"})
     }  
@@ -44,7 +45,41 @@ exports.logoutAll = async (req,res,next) =>{  //logout all
 }
 
 exports.me = (req,res) =>{ // check if user is connected
-    res.status(200).json({connected:true})
+    res.status(200).json(req.user)
+}
+
+exports.meAvatar = async(req,res) =>{
+    try{
+        const buffer = await sharp(req.file.buffer).resize({width:250,height:250}).png().toBuffer()
+        req.user.avatar = buffer
+        await req.user.save()
+        res.status(200).send({message:"The avatar was upload"})
+    }catch(e){
+        res.status(404).send({message:e})
+    }
+}
+
+exports.deleteAvatar = async(req,res) =>{
+    req.user.avatar=undefined
+    await req.user.save()
+    res.status(200).send({message:"The avatar was delete"})
+}
+
+
+exports.avatarUser = async(req,res) =>{
+    try{
+        const user = await User.findById(req.params.id)
+
+        if(!user || !user.avatar){
+            throw new Error()
+        }
+
+        res.set('Content-Type','image/png')
+        res.send(user.avatar)
+
+    }catch(e){
+        res.status(404).json({message:e})
+    }
 }
 
 exports.allUsers = async(req,res) =>{
