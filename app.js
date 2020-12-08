@@ -1,10 +1,9 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const path = require("path");
 require("./db/db")
 
 const userRoutes = require("./routes/users")
 const restaurantsRoutes = require("./routes/restaurants")
+require("dotenv").config()
 
 const app = express();
 
@@ -15,10 +14,13 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 app.use("/api/auth",userRoutes);
 app.use("/api/restaurants", restaurantsRoutes)
 
-module.exports = app
+
+app.listen(process.env.PORT,()=>{
+  console.log("Listening on port "+process.env.PORT)
+})

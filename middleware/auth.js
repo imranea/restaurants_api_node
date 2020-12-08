@@ -4,7 +4,7 @@ const User = require("../models/User")
 const auth = async(req,res,next) =>{ // middleware auth
     try{
         const token = req.header("Authorization").replace("Bearer ","") // get token 
-        const decoded = jwt.verify(token,"thisismynewcourse") // check if token is valid
+        const decoded = jwt.verify(token,process.env.JWT_TOKEN) // check if token is valid
         const user = await User.findOne({_id:decoded._id,"tokens.token":token}) // get user concerned
 
         if(!user){ 

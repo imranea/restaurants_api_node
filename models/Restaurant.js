@@ -19,6 +19,21 @@ const restaurantSchema = new mongoose.Schema({
         unique:true,
         trim:true
     },
+    address:{
+        type:String,
+        required:true,
+        trim:true
+    },
+    postalCode:{
+        type:String,
+        required:true,
+        trim:true
+    },
+    city:{
+        type:String,
+        required:true,
+        trim:true
+    },
     geometry:{
         latitude:{
             type:Number,

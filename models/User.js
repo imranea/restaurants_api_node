@@ -5,17 +5,44 @@ const jwt = require('jsonwebtoken')
 const Restaurant = require('./Restaurant')
 
 const userSchema = new mongoose.Schema({
-    name:{
+    firstname:{
         type:String,
         required:true,
-        unique:true,
         trim:true,
         lowercase:true,
         validate(value){
-            if(!validator.isLength(value,{min:4})){
-                throw new Error('Must have more than 6 letters')
+            if(!validator.isLength(value,{min:2})){
+                throw new Error('Must have more than 2 letters')
             }
         }
+    },
+    lastname:{
+        type:String,
+        required:true,
+        trim:true,
+        lowercase:true,
+        validate(value){
+            if(!validator.isLength(value,{min:2})){
+                throw new Error('Must have more than 2 letters')
+            }
+        }
+    },
+    profession:{
+        type:String,
+        required:true,
+        trim:true,
+        lowercase:true,
+        validate(value){
+            if(!validator.isLength(value,{min:2})){
+                throw new Error('Must have more than 2 letters')
+            }
+        }
+    },
+    age:{
+        type:Number,
+        required:true,
+        trim:true,
+        lowercase:true
     },
     email:{
         type:String,
@@ -51,6 +78,8 @@ const userSchema = new mongoose.Schema({
     avatar:{
         type:Buffer
     }
+},{
+    timestamps:true
 });
 
 userSchema.virtual('restaurants',{ // configure relation between User and Task
@@ -64,14 +93,14 @@ userSchema.methods.toJSON = function(){
     const userObject = user.toObject()
 
     delete userObject.password
-    delete userObject.tokens
+    delete userObject.avatar
 
     return userObject
 }
 
 userSchema.methods.generateAuthToken = async function(){ // method async 
     const user = this 
-    const token = jwt.sign({_id:user._id.toString()},"thisismynewcourse") // create token with a string 
+    const token = jwt.sign({_id:user._id.toString()},process.env.JWT_TOKEN) // create token with a string 
     user.tokens = user.tokens.concat({token}) // add token in array of token
 
     await user.save(); // asve

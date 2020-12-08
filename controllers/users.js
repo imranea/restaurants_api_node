@@ -1,10 +1,12 @@
 const User = require('../models/User');
 const sharp = require('sharp');
+const {sendDeleteEmail,sendWelcomeEmail} = require('../emails/account')
 
 exports.signUp = async (req,res,next) =>{ // signup
     const user = new User(req.body) // instance a new user
     try{
         const token = await user.generateAuthToken() // create a token
+        sendWelcomeEmail(user.email,user.firstname)
         await user.save(); // save user
         res.status(200).json({user,token})
     }catch(e){
