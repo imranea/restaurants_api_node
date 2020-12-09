@@ -95,7 +95,7 @@ exports.allUsers = async(req,res) =>{
 
 exports.update = async(req,res) =>{
     const updates = Object.keys(req.body)
-    const allowedUpdate = ['name','email','password']
+    const allowedUpdate = ['firstname','lastname','age','profession','password']
 
     const isValideOperation = updates.every( update => allowedUpdate.includes(update))
 

@@ -24,7 +24,9 @@ router.post("/login",userCtrl.login) // login
 
 
 router.get("/me",auth,userCtrl.me) // check if user is connected
-router.post("/meAvatar",auth,upload.single('avatar'),userCtrl.meAvatar) // upload an avatar for the profil
+router.post("/meAvatar",auth,upload.single('myImage'),userCtrl.meAvatar,(error,req,res,next)=>{
+    res.status(400).json({error})
+}) // upload an avatar for the profil
 router.delete("/meAvatar",auth,userCtrl.deleteAvatar) // delete avatar user
 router.get("/meAvatar/:id",userCtrl.avatarUser) // get the avatar
 
