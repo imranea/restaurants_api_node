@@ -1,5 +1,5 @@
 const Restaurant = require("../models/Restaurant")
-
+const sharp = require('sharp');
 
 exports.allRestaurants = async(req,res,next)=>{ // get all restaurant
     try{
@@ -31,10 +31,28 @@ exports.getRestaurantById = async(req,res) =>{
     }
 }
 
+exports.getPhotoRestaurant = async(req,res,next) =>{
+    try{
+        const restaurantPhoto = await Restaurant.findById(req.params.id)
+
+        if(!restaurantPhoto || !restaurantPhoto.image){
+            throw new Error()
+        }
+
+        res.set('Content-Type','image/png')
+        res.send(restaurantPhoto.image)
+    }
+    catch(e){
+        res.status(404).json({message:e})
+    }
+}
+
 exports.createRestaurant = async(req,res,next) =>{ // Create Restaurant
     try{
+        const buffer = await sharp(req.file.buffer).resize({width:345,height:345}).png().toBuffer()
         const restaurant = new Restaurant({
-            ...req.body,
+            ...JSON.parse(req.body.restaurant),
+            image:buffer,
             owner:req.user._id
         })
         await restaurant.save()

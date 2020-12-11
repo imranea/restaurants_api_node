@@ -20,7 +20,4 @@ app.use(express.json());
 app.use("/api/auth",userRoutes);
 app.use("/api/restaurants", restaurantsRoutes)
 
-
-app.listen(process.env.PORT,()=>{
-  console.log("Listening on port "+process.env.PORT)
-})
+module.exports = app

@@ -6,7 +6,6 @@ const auth = async(req,res,next) =>{ // middleware auth
         const token = req.header("Authorization").replace("Bearer ","") // get token 
         const decoded = jwt.verify(token,process.env.JWT_TOKEN) // check if token is valid
         const user = await User.findOne({_id:decoded._id,"tokens.token":token}) // get user concerned
-
         if(!user){ 
             throw new Error()
         }

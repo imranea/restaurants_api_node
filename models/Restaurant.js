@@ -35,15 +35,17 @@ const restaurantSchema = new mongoose.Schema({
         trim:true
     },
     geometry:{
-        latitude:{
-            type:Number,
-            required:true,
-            trim:true
-        },
-        longitude:{
-            type:Number,
-            required:true,
-            trim:true
+        location:{
+            lat:{
+                type:Number,
+                required:true,
+                trim:true
+            },
+            lng:{
+                type:Number,
+                required:true,
+                trim:true
+            }
         }
     },
     ratings:{
@@ -87,6 +89,9 @@ const restaurantSchema = new mongoose.Schema({
         },
 
     }],
+    image:{
+        type:Buffer
+    },
     owner:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
