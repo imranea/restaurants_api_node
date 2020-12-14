@@ -64,8 +64,9 @@ exports.createRestaurant = async(req,res,next) =>{ // Create Restaurant
 }
 
 exports.updateRestaurant= async(req,res,next)=>{ // Update Restaurant
-    const updates = Object.keys(req.body) // get keys from req body
-    const updateAllowed = ["name","vicinity","geometry","ratings","types","image","reviews"] // properties allow to updat
+    const restaurant = JSON.parse(req.body.restaurant)
+    const updates = Object.keys(restaurant) // get keys from req body
+    const updateAllowed = ["name","vicinity","geometry","address","postalCode","city","ratings","types","reviews"] // properties allow to updat
     const isValidOperation = updates.every((update)=> updateAllowed.includes(update)) // check if the properties can be update
     if(!isValidOperation){ 
         return res.status(404).json({message:"Restaurant not found to update"})
@@ -77,8 +78,12 @@ exports.updateRestaurant= async(req,res,next)=>{ // Update Restaurant
             return res.status(404).json({message:"Restaurant not found to update"})
         }
         updates.forEach(update =>{ // update the Restaurant with the new data
-            restaurantToUpdate[update]=req.body[update]
+            restaurantToUpdate[update]=restaurant[update]
         })
+        if(req.file){
+            const buffer = await sharp(req.file.buffer).resize({width:345,height:345}).png().toBuffer()
+            restaurantToUpdate.image = buffer
+        }
         await restaurantToUpdate.save() // save 
         res.status(200).json({message:"Updated restaurant!"})
     }catch(e){

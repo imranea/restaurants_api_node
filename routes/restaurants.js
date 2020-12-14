@@ -24,7 +24,7 @@ router.get("/userRestaurants",auth,restaurantsCtrl.userRestaurants)
 router.get("/userRestaurants/:id",auth,restaurantsCtrl.getRestaurantById)
 router.get("/userRestaurants/photo/:id",restaurantsCtrl.getPhotoRestaurant)
 router.post("/create",auth,upload.single('myImage'),restaurantsCtrl.createRestaurant) // create Restaurant
-router.patch("/update/:id",auth,restaurantsCtrl.updateRestaurant) // update Restaurant with id
+router.patch("/update/:id",auth,upload.single('myImage'),restaurantsCtrl.updateRestaurant) // update Restaurant with id
 router.delete("/delete/:id",auth,restaurantsCtrl.delete)
 
 module.exports = router
